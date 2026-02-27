@@ -6,13 +6,33 @@
   "bin": {
     "toesm": "index.js"
   },
+  "type": "module",
   "scripts": {
     "test": "node --test"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "module",
+  "keywords": [
+    "esm",
+    "esbuild",
+    "bundle",
+    "browser",
+    "dependencies",
+    "modules",
+    "import",
+    "cdn-alternative"
+  ],
+  "author": "alexewerlof",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexewerlof/toesm.git"
+  },
+  "bugs": {
+    "url": "https://github.com/alexewerlof/toesm/issues"
+  },
+  "homepage": "https://github.com/alexewerlof/toesm#readme",
+  "engines": {
+    "node": ">=24"
+  },
   "dependencies": {
     "esbuild": "^0.27.3",
     "jty": "^4.0.0"

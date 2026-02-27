@@ -166,4 +166,4 @@ By committing the `dependencies/` folder, you get:
 
 ## License
 
-ISC
+[MIT](LICENSE)
