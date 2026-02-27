@@ -1,6 +1,6 @@
 {
   "name": "vendeps",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Uses esbuild to convert npm packages to ESM bundles for the browser.",
   "main": "index.js",
   "bin": {
