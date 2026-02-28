@@ -3,6 +3,7 @@
 The purpose of this package is to create ESM files from NPM packages.
 
 It can be run directly via `npx vendeps` in a folder with a `package.json`, where it:
+
 1. Reads the list of `dependencies` from `package.json`
 2. Optionally reads per-dependency configuration from the `"vendeps"` key in `package.json`
 3. Uses esbuild to convert each dependency to an ESM bundle and outputs it to `./dependencies/<packageName>.js`

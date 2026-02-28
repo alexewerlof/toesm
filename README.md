@@ -26,7 +26,6 @@ Modern browsers support ES modules natively, but most npm packages still ship Co
 - **Reproducibility** — Vendeps ensures that your app always uses the same version of a dependency.
 - **Predictability** — Vendeps ensures that the exact same dependency you used during development is used in production.
 
-
 ## Quick Start
 
 No installation required. In any project that has a `package.json` with `dependencies`:
@@ -49,9 +48,9 @@ And then:
 
 ```json
 {
-  "scripts": {
-    "build": "vendeps"
-  }
+    "scripts": {
+        "build": "vendeps"
+    }
 }
 ```
 
@@ -59,9 +58,9 @@ If you want it to run automatically after `npm install`, you can add a `postinst
 
 ```json
 {
-  "scripts": {
-    "postinstall": "vendeps"
-  }
+    "scripts": {
+        "postinstall": "vendeps"
+    }
 }
 ```
 
@@ -75,12 +74,12 @@ Instead of rewriting your imports to point at `./dependencies/**/*.js`, you can 
 
 ```html
 <script type="importmap">
-{
-  "imports": {
-    "lit-html": "./dependencies/lit-html.js",
-    "canvas-confetti": "./dependencies/canvas-confetti.js"
-  }
-}
+    {
+        "imports": {
+            "lit-html": "./dependencies/lit-html.js",
+            "canvas-confetti": "./dependencies/canvas-confetti.js"
+        }
+    }
 </script>
 <script type="module" src="app.js"></script>
 ```
@@ -101,12 +100,12 @@ The browser resolves the bare specifiers through the import map, so your code st
 npx vendeps [options]
 ```
 
-| Option | Description |
-|---|---|
-| `--minify` | Minify the output bundles. |
+| Option           | Description                                                                                              |
+| ---------------- | -------------------------------------------------------------------------------------------------------- |
+| `--minify`       | Minify the output bundles.                                                                               |
 | `--target <dir>` | Output to `<dir>/` instead of the default `dependencies/`. The directory is created if it doesn't exist. |
-| `--src <file>` | Path to the `package.json` file (defaults to `./package.json`). |
-| `--help` | Show usage information and exit. |
+| `--src <file>`   | Path to the `package.json` file (defaults to `./package.json`).                                          |
+| `--help`         | Show usage information and exit.                                                                         |
 
 ### Examples
 
@@ -136,40 +135,40 @@ You can customize this behavior per-dependency via the `"vendeps"` key in your `
 
 ```json
 {
-  "dependencies": {
-    "lit-html": "^3.0.0",
-    "chart.js": "^4.0.0",
-    "onnxruntime-node": "1.24.2",
-    "@huggingface/transformers": "^3.0.0"
-  },
-  "vendeps": {
-    // Skip generating bundles for this node-only package in an isomorphic project
-    "onnxruntime-node": null,
-    // Only export Chart from chart.js and define PRODUCTION
-    "chart.js": {
-      "export": "{ Chart }",
-      "define": ["PRODUCTION"]
+    "dependencies": {
+        "lit-html": "^3.0.0",
+        "chart.js": "^4.0.0",
+        "onnxruntime-node": "1.24.2",
+        "@huggingface/transformers": "^3.0.0"
+    },
+    "vendeps": {
+        // Skip generating bundles for this node-only package in an isomorphic project
+        "onnxruntime-node": null,
+        // Only export Chart from chart.js and define PRODUCTION
+        "chart.js": {
+            "export": "{ Chart }",
+            "define": ["PRODUCTION"]
+        }
     }
-  }
 }
 ```
 
 ### Config Options
 
-| Config value | Effect |
-|---|---|
-| *(not set)* | Default — `export * from '<packageName>'` |
-| `null` or `false` | **Skip** this dependency entirely. |
+| Config value        | Effect                                                  |
+| ------------------- | ------------------------------------------------------- |
+| _(not set)_         | Default — `export * from '<packageName>'`               |
+| `null` or `false`   | **Skip** this dependency entirely.                      |
 | `"path/to/file.js"` | Use a custom import source instead of the package name. |
-| `{ ... }` | Full configuration object (see below). |
+| `{ ... }`           | Full configuration object (see below).                  |
 
 ### Full Config Object
 
-| Key | Type | Default | Description |
-|---|---|---|---|
-| `from` | `string` | package name | The import source path. |
-| `export` | `string` | `"*"` | The export style, e.g. `"*"`, `"{ Chart }"`, `"default"`. |
-| `define` | `object` or `string[]` | `{}` | [esbuild `define`](https://esbuild.github.io/api/#define) replacements. When an array of strings, each is defined as `"true"`. |
+| Key      | Type                   | Default      | Description                                                                                                                    |
+| -------- | ---------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| `from`   | `string`               | package name | The import source path.                                                                                                        |
+| `export` | `string`               | `"*"`        | The export style, e.g. `"*"`, `"{ Chart }"`, `"default"`.                                                                      |
+| `define` | `object` or `string[]` | `{}`         | [esbuild `define`](https://esbuild.github.io/api/#define) replacements. When an array of strings, each is defined as `"true"`. |
 
 ### Scoped Packages
 

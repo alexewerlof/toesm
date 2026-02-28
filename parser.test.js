@@ -1,21 +1,21 @@
-import { it, describe } from 'node:test';
-import assert from 'node:assert';
-import { _test, packageJsonToEsbuildOptions } from './parser.js';
+import { it, describe } from 'node:test'
+import assert from 'node:assert'
+import { _test, packageJsonToEsbuildOptions } from './parser.js'
 
 function tableTest(fn, testCases) {
     testCases.forEach(({ name, args, expected, error }) => {
         it(name, () => {
             if (error) {
-                assert.throws(() => fn(...args), error);
+                assert.throws(() => fn(...args), error)
             } else {
-                assert.deepStrictEqual(fn(...args), expected);
+                assert.deepStrictEqual(fn(...args), expected)
             }
-        });
-    });
+        })
+    })
 }
 
 describe('configObj()', () => {
-    const { configObj } = _test;
+    const { configObj } = _test
     const testCases = [
         {
             name: 'Valid input',
@@ -30,51 +30,51 @@ describe('configObj()', () => {
             args: ['', 'default', {}],
             error: RangeError,
         },
-    ];
+    ]
 
-    tableTest(configObj, testCases);
-});
+    tableTest(configObj, testCases)
+})
 
 describe('normalizedConfig()', () => {
-    const { normalizedConfig } = _test;
+    const { normalizedConfig } = _test
     const testCases = [
         {
-            name: "Non-string package name",
+            name: 'Non-string package name',
             args: [123, undefined],
             error: TypeError,
         },
         {
-            name: "Empty package name",
+            name: 'Empty package name',
             args: ['', {}],
             error: RangeError,
         },
         {
-            name: "Package name with invalid characters",
+            name: 'Package name with invalid characters',
             args: ['invalid"name', {}],
             error: SyntaxError,
         },
         {
-            name: "Package name with invalid characters",
-            args: ['invalid\'name', {}],
+            name: 'Package name with invalid characters',
+            args: ["invalid'name", {}],
             error: SyntaxError,
         },
         {
-            name: "Config is null",
+            name: 'Config is null',
             args: ['dep1', null],
             error: TypeError,
         },
         {
-            name: "Config is a number",
+            name: 'Config is a number',
             args: ['dep1', 42],
             error: TypeError,
         },
         {
-            name: "Config object with invalid define type",
+            name: 'Config object with invalid define type',
             args: ['dep1', { export: '*', from: 'path/to/file.js', define: 123 }],
             error: TypeError,
         },
         {
-            name: "Config object with invalid define array",
+            name: 'Config object with invalid define array',
             args: ['dep1', { export: '*', from: 'path/to/file.js', define: [123, true] }],
             error: TypeError,
         },
@@ -142,22 +142,22 @@ describe('normalizedConfig()', () => {
                 define: { FLAG1: 'true', FLAG2: 'true' },
             },
         },
-    ];
+    ]
 
-    tableTest(normalizedConfig, testCases);
-});
+    tableTest(normalizedConfig, testCases)
+})
 
 describe('toEsbuildOptions()', () => {
-    const { toEsbuildOptions } = _test;
+    const { toEsbuildOptions } = _test
 
     it('should return correct options for valid inputs', () => {
-        const name = 'example';
-        const config = 'configString';
-        const resolveDir = '/path/to/dir';
-        const minify = true;
-        const outfile = '/path/to/output.js';
+        const name = 'example'
+        const config = 'configString'
+        const resolveDir = '/path/to/dir'
+        const minify = true
+        const outfile = '/path/to/output.js'
 
-        const result = toEsbuildOptions(name, config, resolveDir, minify, outfile);
+        const result = toEsbuildOptions(name, config, resolveDir, minify, outfile)
 
         assert.deepStrictEqual(result, {
             bundle: true,
@@ -170,43 +170,45 @@ describe('toEsbuildOptions()', () => {
                 loader: 'js',
             },
             outfile: '/path/to/output.js',
-        });
-    });
+        })
+    })
 
     it('should throw error for null config', () => {
-        const name = 'example';
-        const config = null;
-        const resolveDir = '/path/to/dir';
-        const minify = false;
-        const outfile = '/path/to/output.js';
+        const name = 'example'
+        const config = null
+        const resolveDir = '/path/to/dir'
+        const minify = false
+        const outfile = '/path/to/output.js'
 
         assert.throws(() => toEsbuildOptions(name, config, resolveDir, minify, outfile), {
             name: 'TypeError',
-            message: 'Error processing config for example: When specified, config should be a string or object, got null.'
-        });
-    });
+            message:
+                'Error processing config for example: When specified, config should be a string or object, got null.',
+        })
+    })
 
     it('should throw error for array config', () => {
-        const name = 'example';
-        const config = [];
-        const resolveDir = '/path/to/dir';
-        const minify = false;
-        const outfile = '/path/to/output.js';
+        const name = 'example'
+        const config = []
+        const resolveDir = '/path/to/dir'
+        const minify = false
+        const outfile = '/path/to/output.js'
 
         assert.throws(() => toEsbuildOptions(name, config, resolveDir, minify, outfile), {
             name: 'TypeError',
-            message: 'Error processing config for example: When specified, config should be a string or object, got array.'
-        });
-    });
+            message:
+                'Error processing config for example: When specified, config should be a string or object, got array.',
+        })
+    })
 
     it('should handle object config with export and from', () => {
-        const name = 'example';
-        const config = { export: 'default', from: 'source' };
-        const resolveDir = '/path/to/dir';
-        const minify = false;
-        const outfile = '/path/to/output.js';
+        const name = 'example'
+        const config = { export: 'default', from: 'source' }
+        const resolveDir = '/path/to/dir'
+        const minify = false
+        const outfile = '/path/to/output.js'
 
-        const result = toEsbuildOptions(name, config, resolveDir, minify, outfile);
+        const result = toEsbuildOptions(name, config, resolveDir, minify, outfile)
 
         assert.deepStrictEqual(result, {
             bundle: true,
@@ -219,24 +221,24 @@ describe('toEsbuildOptions()', () => {
                 loader: 'js',
             },
             outfile: '/path/to/output.js',
-        });
-    });
-});
+        })
+    })
+})
 
 describe('toEsbuildOptionsArr()', () => {
-    const { toEsbuildOptionsArr } = _test;
+    const { toEsbuildOptionsArr } = _test
 
     it('should return an array of options for valid inputs', () => {
-        const names = ['example1', 'example2'];
+        const names = ['example1', 'example2']
         const vendepsConfig = {
             example1: 'config1',
             example2: { export: 'default', from: 'source2' },
-        };
-        const resolveDir = '/path/to/dir';
-        const minify = true;
-        const targetDir = '/path/to/target';
+        }
+        const resolveDir = '/path/to/dir'
+        const minify = true
+        const targetDir = '/path/to/target'
 
-        const result = toEsbuildOptionsArr(names, vendepsConfig, resolveDir, minify, targetDir);
+        const result = toEsbuildOptionsArr(names, vendepsConfig, resolveDir, minify, targetDir)
 
         assert.deepStrictEqual(result, [
             {
@@ -263,33 +265,32 @@ describe('toEsbuildOptionsArr()', () => {
                 },
                 outfile: '/path/to/target/example2.js',
             },
-        ]);
-    });
-
+        ])
+    })
 
     it('should throw an error for invalid inputs', () => {
-        const names = 'not-an-array';
-        const vendepsConfig = {};
-        const resolveDir = '/path/to/dir';
-        const minify = true;
-        const targetDir = '/path/to/target';
+        const names = 'not-an-array'
+        const vendepsConfig = {}
+        const resolveDir = '/path/to/dir'
+        const minify = true
+        const targetDir = '/path/to/target'
 
         assert.throws(() => toEsbuildOptionsArr(names, vendepsConfig, resolveDir, minify, targetDir), {
             name: 'TypeError',
             message: 'Expected an array of names. Got not-an-array (string).',
-        });
-    });
+        })
+    })
 
     // Skipping test for null/false configs: now handled in packageJsonToEsbuildOptions
 
     it('should returns an esbuild options array even when there are no configs', () => {
-        const names = ['example1x', 'example2x', 'example3x'];
-        const vendepsConfig = undefined;
-        const resolveDir = '/path/to/dir';
-        const minify = true;
-        const targetDir = '/path/to/target';
+        const names = ['example1x', 'example2x', 'example3x']
+        const vendepsConfig = undefined
+        const resolveDir = '/path/to/dir'
+        const minify = true
+        const targetDir = '/path/to/target'
 
-        const result = toEsbuildOptionsArr(names, vendepsConfig, resolveDir, minify, targetDir);
+        const result = toEsbuildOptionsArr(names, vendepsConfig, resolveDir, minify, targetDir)
 
         assert.deepStrictEqual(result, [
             {
@@ -328,41 +329,32 @@ describe('toEsbuildOptionsArr()', () => {
                 },
                 outfile: '/path/to/target/example3x.js',
             },
-        ]);
-    });
-});
+        ])
+    })
+})
 
 describe('packageJsonToEsbuildOptions()', () => {
     it('should throw if packageJson is not an object', async () => {
-        await assert.rejects(
-            () => packageJsonToEsbuildOptions(null, 'vendeps', '/modules', '/target', false),
-            {
-                name: 'TypeError',
-                message: 'Invalid package.json object'
-            }
-        );
-    });
+        await assert.rejects(() => packageJsonToEsbuildOptions(null, 'vendeps', '/modules', '/target', false), {
+            name: 'TypeError',
+            message: 'Invalid package.json object',
+        })
+    })
 
     it('should throw if dependencies is missing', async () => {
-        await assert.rejects(
-            () => packageJsonToEsbuildOptions({}, 'vendeps', '/modules', '/target', false),
-            {
-                name: 'TypeError',
-                message: "No 'dependencies' object found"
-            }
-        );
-    });
+        await assert.rejects(() => packageJsonToEsbuildOptions({}, 'vendeps', '/modules', '/target', false), {
+            name: 'TypeError',
+            message: "No 'dependencies' object found",
+        })
+    })
 
     it('should throw if no dependencies to process after filtering', async () => {
-        const pkg = { dependencies: { a: '1.0.0' }, vendeps: { a: false } };
-        await assert.rejects(
-            () => packageJsonToEsbuildOptions(pkg, 'vendeps', '/modules', '/target', false),
-            {
-                name: 'Error',
-                message: 'No dependencies to process after filtering with config.'
-            }
-        );
-    });
+        const pkg = { dependencies: { a: '1.0.0' }, vendeps: { a: false } }
+        await assert.rejects(() => packageJsonToEsbuildOptions(pkg, 'vendeps', '/modules', '/target', false), {
+            name: 'Error',
+            message: 'No dependencies to process after filtering with config.',
+        })
+    })
 
     it('should return correct esbuild options array with filtered dependencies', async () => {
         const pkg = {
@@ -377,47 +369,47 @@ describe('packageJsonToEsbuildOptions()', () => {
                 b: false,
                 d: null,
                 // a, c, e are included
-            }
-        };
-        const result = await packageJsonToEsbuildOptions(pkg, 'vendeps', '/modules', '/target', true);
+            },
+        }
+        const result = await packageJsonToEsbuildOptions(pkg, 'vendeps', '/modules', '/target', true)
         // Only a, c, e should be present
         assert.deepStrictEqual(result, [
-        {
-            bundle: true,
-            define: {},
-            format: 'esm',
-            minify: true,
-            outfile: '/target/a.js',
-            stdin: {
-                contents: "export * from 'a'",
-                loader: 'js',
-                resolveDir: '/modules'
-            }
-        },
-        {
-            bundle: true,
-            define: {},
-            format: 'esm',
-            minify: true,
-            outfile: '/target/c.js',
-            stdin: {
-                contents: "export * from 'c'",
-                loader: 'js',
-                resolveDir: '/modules'
-            }
-        },
-        {
-            bundle: true,
-            define: {},
-            format: 'esm',
-            minify: true,
-            outfile: '/target/e.js',
-            stdin: {
-                contents: "export * from 'e'",
-                loader: 'js',
-                resolveDir: '/modules'
-            }
-        }
-    ]);
-    });
-});
+            {
+                bundle: true,
+                define: {},
+                format: 'esm',
+                minify: true,
+                outfile: '/target/a.js',
+                stdin: {
+                    contents: "export * from 'a'",
+                    loader: 'js',
+                    resolveDir: '/modules',
+                },
+            },
+            {
+                bundle: true,
+                define: {},
+                format: 'esm',
+                minify: true,
+                outfile: '/target/c.js',
+                stdin: {
+                    contents: "export * from 'c'",
+                    loader: 'js',
+                    resolveDir: '/modules',
+                },
+            },
+            {
+                bundle: true,
+                define: {},
+                format: 'esm',
+                minify: true,
+                outfile: '/target/e.js',
+                stdin: {
+                    contents: "export * from 'e'",
+                    loader: 'js',
+                    resolveDir: '/modules',
+                },
+            },
+        ])
+    })
+})

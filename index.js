@@ -18,9 +18,7 @@ async function loadJson(filePath) {
 import { fileURLToPath } from 'node:url'
 import { packageJsonToEsbuildOptions } from './parser'
 
-const vendepsPackageJson = await loadJson(
-    resolve(dirname(fileURLToPath(import.meta.url)), 'package.json')
-)
+const vendepsPackageJson = await loadJson(resolve(dirname(fileURLToPath(import.meta.url)), 'package.json'))
 
 const CONFIG_KEY = vendepsPackageJson.name
 const DEFAULT_TARGET_DIR = './dependencies'
@@ -47,8 +45,7 @@ const argv = yargs(hideBin(process.argv))
     })
     .help('help')
     .alias('help', 'h')
-    .epilog(vendepsPackageJson.description)
-    .argv;
+    .epilog(vendepsPackageJson.description).argv
 
 const targetDir = resolve(process.cwd(), argv.target)
 const srcFile = resolve(process.cwd(), argv.src)
@@ -59,14 +56,20 @@ async function main() {
     const minify = argv.minify
 
     console.time(`Read and parse ${srcFile}`)
-    const optionsArr = await packageJsonToEsbuildOptions(await loadJson(srcFile), CONFIG_KEY, nodeModulesDir, targetDir, minify)
+    const optionsArr = await packageJsonToEsbuildOptions(
+        await loadJson(srcFile),
+        CONFIG_KEY,
+        nodeModulesDir,
+        targetDir,
+        minify,
+    )
     console.timeEnd(`Read and parse ${srcFile}`)
     if (optionsArr.length === 0) {
         console.info('🫙 No dependencies to process. Exiting.')
         return
     }
 
-    await mkdir(targetDir, { recursive: true });
+    await mkdir(targetDir, { recursive: true })
     console.info(`🏃 Updating ${targetDir} for ${optionsArr.length} dependency(ies). Minify: ${minify}`)
 
     console.time('Build')

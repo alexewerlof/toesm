@@ -1,47 +1,52 @@
 {
-  "name": "vendeps",
-  "version": "1.0.1",
-  "description": "Uses esbuild to convert npm packages to ESM bundles for the browser.",
-  "main": "index.js",
-  "bin": {
-    "vendeps": "index.js"
-  },
-  "files": [
-    "index.js",
-    "parser.js",
-    "README.md",
-    "LICENSE"
-  ],
-  "type": "module",
-  "scripts": {
-    "test": "node --test"
-  },
-  "keywords": [
-    "esm",
-    "esbuild",
-    "bundle",
-    "browser",
-    "dependencies",
-    "modules",
-    "import",
-    "cdn-alternative"
-  ],
-  "author": "alexewerlof",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/alexewerlof/vendeps.git"
-  },
-  "bugs": {
-    "url": "https://github.com/alexewerlof/vendeps/issues"
-  },
-  "homepage": "https://github.com/alexewerlof/vendeps#readme",
-  "engines": {
-    "node": ">=24"
-  },
-  "dependencies": {
-    "esbuild": "^0.27.3",
-    "jty": "^4.0.0",
-    "yargs": "^18.0.0"
-  }
+    "name": "vendeps",
+    "version": "1.0.1",
+    "description": "Uses esbuild to convert npm packages to ESM bundles for the browser.",
+    "main": "index.js",
+    "bin": {
+        "vendeps": "index.js"
+    },
+    "files": [
+        "index.js",
+        "parser.js",
+        "README.md",
+        "LICENSE"
+    ],
+    "type": "module",
+    "scripts": {
+        "test": "node --test",
+        "fmt": "prettier --write .",
+        "preversion": "npm run fmt"
+    },
+    "keywords": [
+        "esm",
+        "esbuild",
+        "bundle",
+        "browser",
+        "dependencies",
+        "modules",
+        "import",
+        "cdn-alternative"
+    ],
+    "author": "alexewerlof",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/alexewerlof/vendeps.git"
+    },
+    "bugs": {
+        "url": "https://github.com/alexewerlof/vendeps/issues"
+    },
+    "homepage": "https://github.com/alexewerlof/vendeps#readme",
+    "engines": {
+        "node": ">=24"
+    },
+    "dependencies": {
+        "esbuild": "^0.27.3",
+        "jty": "^4.0.0",
+        "yargs": "^18.0.0"
+    },
+    "devDependencies": {
+        "prettier": "^3.8.1"
+    }
 }

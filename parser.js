@@ -1,5 +1,5 @@
-import { isArr, isBool, isObj, isStr } from "jty"
-import { join } from "node:path"
+import { isArr, isBool, isObj, isStr } from 'jty'
+import { join } from 'node:path'
 const SKIP_CONFIG_VALUES = [null, false]
 
 function configObj(frm, exp = '*', def = {}) {
@@ -31,7 +31,9 @@ function configObj(frm, exp = '*', def = {}) {
         for (let i = 0; i < arr.length; i++) {
             const item = arr[i]
             if (!isStr(item)) {
-                throw new TypeError(`When 'define' is an array, all items should be strings. Got ${item} (${typeof item}) at index ${i}.`)
+                throw new TypeError(
+                    `When 'define' is an array, all items should be strings. Got ${item} (${typeof item}) at index ${i}.`,
+                )
             }
             def[item] = String(true)
         }
@@ -100,7 +102,9 @@ function toEsbuildOptionsArr(names, vendepsConfig = {}, resolveDir, minify, targ
         throw new TypeError(`Expected 'targetDir' to be a string. Got ${targetDir} (${typeof targetDir}).`)
     }
 
-    return names.map((name) => toEsbuildOptions(name, vendepsConfig?.[name], resolveDir, minify, join(targetDir, `${name}.js`)))
+    return names.map((name) =>
+        toEsbuildOptions(name, vendepsConfig?.[name], resolveDir, minify, join(targetDir, `${name}.js`)),
+    )
 }
 
 export async function packageJsonToEsbuildOptions(packageJson, configKey, resolveDir, targetDir, minify) {
@@ -112,9 +116,10 @@ export async function packageJsonToEsbuildOptions(packageJson, configKey, resolv
         throw new TypeError(`No 'dependencies' object found`)
     }
 
-    const dependencyNames = Object.keys(dependencies)
-        .filter((name) => vendepsConfig && !SKIP_CONFIG_VALUES.includes(vendepsConfig?.[name]))
-    
+    const dependencyNames = Object.keys(dependencies).filter(
+        (name) => vendepsConfig && !SKIP_CONFIG_VALUES.includes(vendepsConfig?.[name]),
+    )
+
     if (dependencyNames.length === 0) {
         throw new Error('No dependencies to process after filtering with config.')
     }
