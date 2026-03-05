@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 
+import * as esbuild from 'esbuild'
 import { mkdir, readFile } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
-import { hideBin } from 'yargs/helpers'
+import { fileURLToPath } from 'node:url'
 import yargs from 'yargs'
-import * as esbuild from 'esbuild'
+import { hideBin } from 'yargs/helpers'
+import { packageJsonToEsbuildOptions } from './parser.js'
 
 async function loadJson(filePath) {
     try {
@@ -14,9 +16,6 @@ async function loadJson(filePath) {
         throw new Error(`❌ Failed to load JSON from ${filePath}: ${err.message}`)
     }
 }
-
-import { fileURLToPath } from 'node:url'
-import { packageJsonToEsbuildOptions } from './parser'
 
 const vendepsPackageJson = await loadJson(resolve(dirname(fileURLToPath(import.meta.url)), 'package.json'))
 
