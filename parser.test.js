@@ -356,6 +356,44 @@ describe('packageJsonToEsbuildOptions()', () => {
         })
     })
 
+    it('should include all dependencies when top-level vendeps config is absent', async () => {
+        const pkg = {
+            dependencies: {
+                a: '1.0.0',
+                b: '2.0.0',
+            },
+        }
+
+        const result = await packageJsonToEsbuildOptions(pkg, 'vendeps', '/modules', '/target', false)
+
+        assert.deepStrictEqual(result, [
+            {
+                bundle: true,
+                define: {},
+                format: 'esm',
+                minify: false,
+                outfile: '/target/a.js',
+                stdin: {
+                    contents: "export * from 'a'",
+                    loader: 'js',
+                    resolveDir: '/modules',
+                },
+            },
+            {
+                bundle: true,
+                define: {},
+                format: 'esm',
+                minify: false,
+                outfile: '/target/b.js',
+                stdin: {
+                    contents: "export * from 'b'",
+                    loader: 'js',
+                    resolveDir: '/modules',
+                },
+            },
+        ])
+    })
+
     it('should return correct esbuild options array with filtered dependencies', async () => {
         const pkg = {
             dependencies: {
