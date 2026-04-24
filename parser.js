@@ -116,7 +116,9 @@ export async function packageJsonToEsbuildOptions(packageJson, configKey, resolv
         throw new TypeError(`No 'dependencies' object found`)
     }
 
-    const dependencyNames = Object.keys(dependencies).filter((name) => !SKIP_CONFIG_VALUES.includes(vendepsConfig?.[name]))
+    const dependencyNames = Object.keys(dependencies).filter(
+        (name) => !SKIP_CONFIG_VALUES.includes(vendepsConfig?.[name]),
+    )
 
     if (dependencyNames.length === 0) {
         throw new Error('No dependencies to process after filtering with config.')
